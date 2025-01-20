@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductByIdAsync, selectProductById, selectProductListStatus } from '../productSlice';
 import { useParams } from 'react-router-dom';
 import { addToCartAsync, selectItems } from '../../cart/cartSlice';
-import { selectLoggedInUser } from '../../auth/authSlice';
 import { discountedPrice } from '../../../app/constants';
 import { useAlert } from 'react-alert';
 import { Grid } from 'react-loader-spinner';
@@ -44,7 +43,6 @@ function classNames(...classes) {
 export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
-  const user = useSelector(selectLoggedInUser);
   const items = useSelector(selectItems);
   const product = useSelector(selectProductById);
   const dispatch = useDispatch();
@@ -54,13 +52,11 @@ export default function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
-    if (items.findIndex((item) => item.productId === product.id) < 0) {
+    if (items.findIndex((item) => item.product.id === product.id) < 0) {
       console.log({ items, product });
       const newItem = {
-        ...product,
-        productId: product.id,
+        product: product.id,
         quantity: 1,
-        user: user.id,
       };
       delete newItem['id'];
       dispatch(addToCartAsync(newItem));
@@ -132,7 +128,7 @@ export default function ProductDetail() {
           <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
             <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
               <img
-                src={product.images[0]}
+                src={product.images[0] || product.thumbnail}
                 alt={product.title}
                 className="h-full w-full object-cover object-center"
               />
@@ -140,14 +136,14 @@ export default function ProductDetail() {
             <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
               <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                 <img
-                  src={product.images[1]}
-                  alt={product.title}
+                  src={product.images[1] || product.thumbnail}
+                  alt={product.title }
                   className="h-full w-full object-cover object-center"
                 />
               </div>
               <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                 <img
-                  src={product.images[2]}
+                  src={product.images[2] || product.thumbnail}
                   alt={product.title}
                   className="h-full w-full object-cover object-center"
                 />
@@ -155,7 +151,7 @@ export default function ProductDetail() {
             </div>
             <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
               <img
-                src={product.images[3]}
+                src={product.images[3] || product.thumbnail}
                 alt={product.title}
                 className="h-full w-full object-cover object-center"
               />

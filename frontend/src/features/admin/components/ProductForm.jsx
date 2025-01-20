@@ -12,6 +12,8 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Modal from '../../common/Modal';
+import { useAlert } from 'react-alert';
+
 
 function ProductForm() {
   const {
@@ -27,6 +29,8 @@ function ProductForm() {
   const params = useParams();
   const selectedProduct = useSelector(selectProductById);
   const [openModal, setOpenModal] = useState(null);
+
+  const alert = useAlert()
 
   useEffect(() => {
     if (params.id) {
@@ -84,9 +88,11 @@ function ProductForm() {
           product.id = params.id;
           product.rating = selectedProduct.rating || 0;
           dispatch(updateProductAsync(product));
+          alert.success('Product Updated')
           reset();
         } else {
           dispatch(createProductAsync(product));
+          alert.success('Product Created')
           reset();
           //TODO:  on product successfully added clear fields and show a message
         }
@@ -99,7 +105,7 @@ function ProductForm() {
           </h2>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          {selectedProduct.deleted && <h2 className="text-red-500 sm:col-span-6">This product is deleted</h2>}
+          {selectedProduct && selectedProduct?.deleted && <h2 className="text-red-500 sm:col-span-6">This product is deleted</h2>}
 
             <div className="sm:col-span-6">
               <label
@@ -430,7 +436,7 @@ function ProductForm() {
           Cancel
         </button>
 
-        {selectedProduct && !selectedProduct.deleted && (
+        {selectedProduct && !selectedProduct?.deleted && (
           <button
             onClick={(e)=>{e.preventDefault();setOpenModal(true)}}
             className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -447,15 +453,15 @@ function ProductForm() {
         </button>
       </div>
     </form>
-    <Modal
-        title={`Delete ${selectedProduct.title}`}
+    {selectedProduct && <Modal
+        title={`Delete ${selectedProduct?.title}`}
         message="Are you sure you want to delete this Product ?"
         dangerOption="Delete"
         cancelOption="Cancel"
         dangerAction={handleDelete}
         cancelAction={() => setOpenModal(null)}
         showModal={openModal}
-      ></Modal>
+      ></Modal>}
     </>
   );
 }

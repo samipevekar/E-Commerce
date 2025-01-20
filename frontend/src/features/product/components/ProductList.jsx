@@ -45,6 +45,7 @@ export default function ProductList() {
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
   const totalItems = useSelector(selectTotalItems);
+  console.log(totalItems)
   const status = useSelector(selectProductListStatus);
   const filters = [
     {
@@ -65,7 +66,6 @@ export default function ProductList() {
   const [page, setPage] = useState(1);
 
   const handleFilter = (e, section, option) => {
-    console.log(e.target.checked);
     const newFilter = { ...filter };
     // TODO : on server it will support multiple categories
     if (e.target.checked) {

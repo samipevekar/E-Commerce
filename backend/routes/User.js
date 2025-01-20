@@ -3,7 +3,7 @@ import { fetchUserById, updateUser } from '../controller/User.js'
 
 const router = express.Router()
 
-router.get('/:id', fetchUserById)
+router.get('/own', fetchUserById)
 router.patch('/:id', updateUser)
 
 export default router
