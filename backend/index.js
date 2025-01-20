@@ -133,9 +133,10 @@ mongoose
   .catch((err) => console.log(err));
 
 // Default Route
-server.get("/", (req, res) => {
-  res.json({ status: "success" });
+server.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
+
 
 // Export for Vercel
 export default server;
