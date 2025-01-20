@@ -89,7 +89,7 @@ passport.use(
           if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
             return done(null, false, { message: 'invalid credentials' });
           }
-          const token = jwt.sign(sanitizeUser(user), procces.env.SECRET_KEY);
+          const token = jwt.sign(sanitizeUser(user), process.env.SECRET_KEY);
           done(null, {id:user.id,name:user.name, role:user.role, token}); // this lines sends to serializer
         }
       );
