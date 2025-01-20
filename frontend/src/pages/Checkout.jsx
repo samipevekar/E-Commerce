@@ -65,12 +65,12 @@ function Checkout() {
       if(paymentMethod == 'card'){      
       try {
         // Fetch Razorpay key
-        const keyData = await fetch('/products/payment/getkey');
+        const keyData = await fetch('https://e-commerce-sami.vercel.app/products/payment/getkey');
         const new_data = await keyData.json();
         const { key } = new_data;
   
         // Create payment order on the backend
-        const response = await fetch('/products/payment/process', {
+        const response = await fetch('https://e-commerce-sami.vercel.app/products/payment/process', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
