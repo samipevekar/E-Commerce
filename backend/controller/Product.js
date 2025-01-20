@@ -79,29 +79,35 @@ export const updateProduct = async(req,res) => {
 
 
 // Razorpay 
-export const processPayment = async(req,res)=>{
+export const processPayment = async (req, res) => {
   try {
-    if(!req.body.amount){
-      return res.status(400).json({message:'total amount is required'})
+    const { amount } = req.body;
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ success: false, message: "Invalid or missing amount" });
     }
-  
-  
+
     const options = {
-      amount:Number(req.body.amount*100),
-      currency:"INR"
-    }
-    
-  
-    const order = await instance.orders.create(options)
-  
+      amount: amount * 100, // Razorpay expects the amount in paise (integer value)
+      currency: "INR",
+    };
+
+    // Create order using Razorpay instance
+    const order = await instance.orders.create(options);
+
     res.status(200).json({
-      success:true,
-      order
-    })
+      success: true,
+      order,
+    });
   } catch (error) {
-    console.log(error)
+    console.error("Error in processPayment:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error. Could not process payment.",
+    });
   }
-}
+};
+
 
 //Get key
 export const getKey = async(req,res)=>{
@@ -115,31 +121,45 @@ export const getKey = async(req,res)=>{
 }
 
 // payment verification
-// payment verification
 export const paymentVerification = async (req, res) => {
   try {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
-  const body = razorpay_order_id + '|' + razorpay_payment_id;
-  const expectedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_API_SECRET)
-                                  .update(body.toString())
-                                  .digest('hex');
 
-  const isAuthenticate = expectedSignature === razorpay_signature;
+    if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required payment details",
+      });
+    }
 
-  if (isAuthenticate) {
-    // Respond with success and payment ID for frontend use
-    return res.status(200).json({
-      success: true,
-      payment_id: razorpay_payment_id,  // Payment ID to be used for order creation
+    const body = `${razorpay_order_id}|${razorpay_payment_id}`;
+
+    // Generate expected signature
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
+      .update(body)
+      .digest("hex");
+
+    // Validate signature
+    const isAuthentic = expectedSignature === razorpay_signature;
+
+    if (isAuthentic) {
+      return res.status(200).json({
+        success: true,
+        message: "Payment verified successfully",
+        payment_id: razorpay_payment_id, // Include payment ID for further processing
+      });
+    }
+
+    res.status(400).json({
+      success: false,
+      message: "Payment verification failed. Invalid signature.",
     });
-  }
-
-  // If signature doesn't match, return failure
-  res.status(400).json({
-    success: false,
-    message: "Payment verification failed",
-  });
   } catch (error) {
-    console.log(error)
+    console.error("Error in paymentVerification:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error. Could not verify payment.",
+    });
   }
 };
