@@ -71,7 +71,7 @@ export const updateProduct = async(req,res) => {
   try {
     const product = await Product.findByIdAndUpdate(id,req.body,{new:true});
     res.status(200).json(product);
-  } catch (error) {
+  } catch (error) { 
     res.status(400).json(error);
     console.log(error)
   }
