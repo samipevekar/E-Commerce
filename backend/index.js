@@ -58,6 +58,8 @@ server.use(
 server.use(passport.authenticate("session"));
 server.use(
   cors({
+    origin:'http://localhost:5173',
+    credentials:true,
     exposedHeaders: ["X-Total-Count"],
   })
 );

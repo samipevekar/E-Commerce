@@ -14,9 +14,9 @@ export const cookieExtractor = function (req) {
     token = req.cookies['jwt'];
   }
   //TODO : this is temporary token for testing without cookie
-  // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODhlNDI1NzMzZTZjZTZiYjIwNWI0NSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzM3MDI0NTQ5fQ.dT1YsG_GT6E7SqsptncQuHCYJHfE0Wx6rrjZl5HutO0"
+  // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OGNjYzEzMjIzM2Q0ZGE3OGRmNDllYSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzM3NTQ0NzU0fQ.209zhmOxZ2Jlv2oTr8NY5jaLnhg1e1mdtvEayRIH774"
 
   // admin token
-  // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OGNjMTQ1NGI3MDEyNGViMGE3NjllOCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzM3Mjc3NzY1fQ.qakttVVjAVfY9vOVPYBipCuzNt97Jxg1Sgj0qDkssF4"
+  // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OGNjYjlhYzY3YWJkOWYwZGNmNWYwOSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzgwMDE4MH0.8f19SaRclkMHvIQDgwRBGAslS9TkXECrRtPyNruiikY"
   return token;
 };
