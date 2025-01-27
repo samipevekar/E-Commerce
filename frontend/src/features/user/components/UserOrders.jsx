@@ -8,6 +8,8 @@ import {
 } from '../userSlice';
 import { discountedPrice } from '../../../app/constants';
 import { Grid } from 'react-loader-spinner';
+import Loader from '../../common/Loader';
+import { Link } from 'react-router-dom';
 
 export default function UserOrders() {
   const dispatch = useDispatch();
@@ -20,15 +22,15 @@ export default function UserOrders() {
 
   return (
     <div>
-      {orders && orders.length> 0 && orders.map((order) => (
+      {orders && orders.length> 0 ? orders.map((order) => (
         <div>
           <div>
             <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
+              <div className=" px-4 py-6 sm:px-6">
+                <h1 className="lg:text-4xl md:text-xl my-5 font-bold tracking-tight text-gray-900">
                   Order #{order.id}
                 </h1>
-                <h3 className="text-xl my-5 font-bold tracking-tight text-red-900">
+                <h3 className="lg:text-xl my-5 md:text-sm  font-bold tracking-tight text-red-900">
                   Order Status : {order.status}
                 </h3>
                 <div className="flow-root">
@@ -86,16 +88,16 @@ export default function UserOrders() {
                 <p className="mt-0.5 text-sm text-gray-500">
                   Shipping Address :
                 </p>
-                <div className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200">
+                <div className="flex justify-between mt-2 rounded-md gap-x-6 px-5 py-5 border-solid border-2 border-gray-200">
                   <div className="flex gap-x-4">
                     <div className="min-w-0 flex-auto">
                       <p className="text-sm font-semibold leading-6 text-gray-900">
                         {order.selectedAddress.name}
                       </p>
-                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                        {order.selectedAddress.street}
+                      <p className="mt-1 truncate text-xs  leading-5 text-gray-500">
+                        {order.selectedAddress.street.slice(0,50)}{"..."}
                       </p>
-                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                      <p className="mt-1 truncate text-xs  leading-5 text-gray-500">
                         {order.selectedAddress.pinCode}
                       </p>
                     </div>
@@ -113,18 +115,11 @@ export default function UserOrders() {
             </div>
           </div>
         </div>
-      ))}
+      ))
+      : <div className='text-center mt-[30vh] bg-black hover:bg-gray-900 cursor-pointer w-fit m-auto p-3 rounded-md text-white font-semibold'><Link to={'/'} className='p-3'>Shop Now</Link></div>
+    }
       {status === 'loading' ? (
-              <Grid
-                height="80"
-                width="80"
-                color="rgb(79, 70, 229) "
-                ariaLabel="grid-loading"
-                radius="12.5"
-                wrapperStyle={{}}
-                wrapperClass=""
-                visible={true}
-              />
+              <Loader/>
             ) : null}
     </div>
   );

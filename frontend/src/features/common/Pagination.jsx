@@ -8,13 +8,13 @@ export default function Pagination({ page, setPage, handlePage, totalItems }) {
         <div className="flex flex-1 justify-between sm:hidden">
           <div
             onClick={(e) => handlePage(page > 1 ? page - 1 : page)}
-            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="relative inline-flex items-center cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             Previous
           </div>
           <div
             onClick={(e) => handlePage(page < totalPages ? page + 1 : page)}
-            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="relative ml-3 inline-flex cursor-pointer items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             Next
           </div>
@@ -42,7 +42,7 @@ export default function Pagination({ page, setPage, handlePage, totalItems }) {
             >
               <div
                 onClick={(e) => handlePage(page > 1 ? page - 1 : page)}
-                className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                className="relative inline-flex cursor-pointer items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
               >
                 <span className="sr-only">Previous</span>
                 <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
@@ -56,9 +56,9 @@ export default function Pagination({ page, setPage, handlePage, totalItems }) {
                   aria-current="page"
                   className={`relative cursor-pointer z-10 inline-flex items-center ${
                     index + 1 === page
-                      ? 'bg-indigo-600 text-white'
+                      ? 'bg-black text-white'
                       : 'text-gray-400'
-                  } px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                  } px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 `}
                 >
                   {index + 1}
                 </div>
@@ -66,7 +66,7 @@ export default function Pagination({ page, setPage, handlePage, totalItems }) {
   
               <div
                 onClick={(e) => handlePage(page < totalPages ? page + 1 : page)}
-                className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                className="relative cursor-pointer inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
               >
                 <span className="sr-only">Next</span>
                 <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />

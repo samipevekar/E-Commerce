@@ -80,6 +80,7 @@ export const selectUserOrders = (state) => state.user.userInfo.orders;
 
 export const selectUserInfo = (state) => state.user.userInfo;
 export const selectUserInfoStatus = (state) => state.user.status;
+export const selectUserStatus = (state) => state.user.status
 
 // export const { increment } = userSlice.actions;
 

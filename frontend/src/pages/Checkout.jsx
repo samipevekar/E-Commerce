@@ -12,13 +12,18 @@ import { useState } from 'react';
 import {
   createOrderAsync,
   selectCurrentOrder,
+  selectOrderStatus,
 } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
 import { discountedPrice } from '../app/constants';
 import axios from 'axios'
 import { useAlert } from 'react-alert';
+import Loader from '../features/common/Loader';
 
 function Checkout() {
+
+  let [loading, setLoading] = useState(false)
+
   const dispatch = useDispatch();
   const {
     register,
@@ -30,6 +35,7 @@ function Checkout() {
   const user = useSelector(selectUserInfo);
   const items = useSelector(selectItems);
   const currentOrder = useSelector(selectCurrentOrder);
+  const orderStatus = useSelector(selectOrderStatus)
 
   const alert = useAlert()
 
@@ -64,6 +70,7 @@ function Checkout() {
     if (selectedAddress && paymentMethod) {
       if(paymentMethod == 'card'){      
       try {
+        setLoading(true)
         // Fetch Razorpay key
         const keyData = await fetch('https://e-commerce-sami.vercel.app/products/payment/getkey');
         const new_data = await keyData.json();
@@ -95,7 +102,7 @@ function Checkout() {
             contact: '9999999999',
           },
           theme: {
-            color: '#F37254',
+            color: '#000000',
           },
           handler: async function (response) {
             if (response && response.razorpay_payment_id) {
@@ -108,7 +115,7 @@ function Checkout() {
                 body: JSON.stringify({
                   razorpay_payment_id: response.razorpay_payment_id,
                   razorpay_order_id: response.razorpay_order_id,
-                  razorpay_signature: response.razorpay_signature,
+                  razorpay_signature: response.razorpay_signature
                 }),
               });
   
@@ -146,6 +153,8 @@ function Checkout() {
       } catch (error) {
         console.log(error);
         alert.error('Error occurred while processing the payment.');
+      }finally{
+        setLoading(false)
       }
     }
     else if(paymentMethod == 'cash'){
@@ -195,7 +204,7 @@ function Checkout() {
               })}
             >
               <div className="space-y-12">
-                <div className="border-b border-gray-900/10 pb-12">
+                <div className=" border-gray-900/10 pb-12">
                   <h2 className="text-2xl font-semibold leading-7 text-gray-900">
                     Personal Information
                   </h2>
@@ -218,7 +227,7 @@ function Checkout() {
                             required: 'name is required',
                           })}
                           id="name"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                         />
                         {errors.name && (
                           <p className="text-red-500">{errors.name.message}</p>
@@ -240,7 +249,7 @@ function Checkout() {
                             required: 'email is required',
                           })}
                           type="email"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                         />
                         {errors.email && (
                           <p className="text-red-500">{errors.email.message}</p>
@@ -262,7 +271,7 @@ function Checkout() {
                             required: 'phone is required',
                           })}
                           type="tel"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                         />
                         {errors.phone && (
                           <p className="text-red-500">{errors.phone.message}</p>
@@ -284,7 +293,7 @@ function Checkout() {
                             required: 'street is required',
                           })}
                           id="street"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                         />
                         {errors.street && (
                           <p className="text-red-500">
@@ -309,7 +318,7 @@ function Checkout() {
                           })}
                           id="city"
                           autoComplete="address-level2"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                         />
                         {errors.city && (
                           <p className="text-red-500">{errors.city.message}</p>
@@ -332,7 +341,7 @@ function Checkout() {
                           })}
                           id="state"
                           autoComplete="address-level1"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                         />
                         {errors.state && (
                           <p className="text-red-500">{errors.state.message}</p>
@@ -354,7 +363,7 @@ function Checkout() {
                             required: 'pinCode is required',
                           })}
                           id="pinCode"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                         />
                         {errors.pinCode && (
                           <p className="text-red-500">
@@ -376,14 +385,15 @@ function Checkout() {
                   </button>
                   <button
                     type="submit"
-                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-900 "
                   >
                     Add Address
                   </button>
                 </div>
               </div>
             </form>
-            <div className="border-b border-gray-900/10 pb-12">
+            <hr className='mx-2' />
+            <div className=" bg-white p-4  border-gray-900 border-gray-900/10 pb-12">
               <h2 className="text-base font-semibold leading-7 text-gray-900">
                 Addresses
               </h2>
@@ -394,7 +404,7 @@ function Checkout() {
                 {user?.addresses.map((address, index) => (
                   <li
                     key={index}
-                    className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200"
+                    className="flex justify-between gap-x-6 px-5 py-5 border-solid rounded-md mt-2 border-2 border-gray-200"
                   >
                     <div className="flex gap-x-4">
                       <input
@@ -402,14 +412,14 @@ function Checkout() {
                         name="address"
                         type="radio"
                         value={index}
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        className="h-4 w-4  cursor-pointer border-gray-300 text-gray-600 focus:ring-gray-600"
                       />
                       <div className="min-w-0 flex-auto">
-                        <p className="text-sm font-semibold leading-6 text-gray-900">
+                        <p className="text-md font-semibold leading-6 text-gray-900">
                           {address.name}
                         </p>
                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                          {address.street}
+                          {address.street.slice(0,45)}...
                         </p>
                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">
                           {address.pinCode}
@@ -445,7 +455,7 @@ function Checkout() {
                         value="cash"
                         type="radio"
                         checked={paymentMethod === 'cash'}
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        className="h-4 w-4 cursor-pointer border-gray-300 text-gray-600 focus:ring-gray-600"
                       />
                       <label
                         htmlFor="cash"
@@ -462,7 +472,7 @@ function Checkout() {
                         checked={paymentMethod === 'card'}
                         value="card"
                         type="radio"
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        className="h-4 w-4 cursor-pointer border-gray-300 text-gray-600 focus:ring-gray-600"
                       />
                       <label
                         htmlFor="card"
@@ -530,7 +540,7 @@ function Checkout() {
                               <button
                                 onClick={(e) => handleRemove(e, item.id)}
                                 type="button"
-                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                className="font-medium text-red-600 hover:text-red-500"
                               >
                                 Remove
                               </button>
@@ -556,20 +566,21 @@ function Checkout() {
                   Shipping and taxes calculated at checkout.
                 </p>
                 <div className="mt-6">
-                  <div
+                  <button
+                    disabled={loading || orderStatus == 'loading' ? true : false}
                     onClick={()=>handleOrder(totalAmount)}
-                    className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                    className="flex w-full cursor-pointer items-center justify-center rounded-md border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900"
                   >
-                    Order Now
-                  </div>
+                    {loading || orderStatus == 'loading' ? <span className="loading loading-spinner text-white"></span> : 'Order Now'}
+                  </button>
                 </div>
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                   <p>
-                    or
+                    or{" "}
                     <Link to="/">
                       <button
                         type="button"
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-gray-600 hover:text-gray-900"
                       >
                         Continue Shopping
                         <span aria-hidden="true"> &rarr;</span>

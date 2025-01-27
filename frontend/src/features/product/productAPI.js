@@ -2,7 +2,9 @@
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
     //TODO: we will not hard-code server URL here
-    const response = await fetch('/products/' + id);
+    const response = await fetch('/products/' + id,{
+      credentials: "include",
+    });
     const data = await response.json();
     resolve({ data });
   });
@@ -14,6 +16,7 @@ export function createProduct(product) {
       method: 'POST',
       body: JSON.stringify(product),
       headers: { 'content-type': 'application/json' },
+      credentials: "include",
     });
     const data = await response.json();
     resolve({ data });
@@ -28,6 +31,7 @@ export function updateProduct(update) {
         method: 'PATCH',
         body: JSON.stringify(update),
         headers: { 'content-type': 'application/json' },
+        credentials: "include",
       }
     );
     const data = await response.json();
@@ -64,7 +68,10 @@ export function fetchProductsByFilters(filter, sort, pagination, admin) {
   return new Promise(async (resolve) => {
     //TODO: we will not hard-code server URL here
     const response = await fetch(
-      '/products?' + queryString
+      '/products?' + queryString,{
+        credentials: "include",
+      }
+      
     );
     const data = await response.json();
     const totalItems = await response.headers.get('X-Total-Count');
@@ -74,7 +81,9 @@ export function fetchProductsByFilters(filter, sort, pagination, admin) {
 
 export function fetchCategories() {
   return new Promise(async (resolve) => {
-    const response = await fetch('/categories');
+    const response = await fetch('/categories',{
+      credentials: "include",
+    });
     const data = await response.json();
     resolve({ data });
   });
@@ -82,7 +91,9 @@ export function fetchCategories() {
 
 export function fetchBrands() {
   return new Promise(async (resolve) => {
-    const response = await fetch('/brands');
+    const response = await fetch('/brands',{
+      credentials: "include",
+    });
     const data = await response.json();
     resolve({ data });
   });

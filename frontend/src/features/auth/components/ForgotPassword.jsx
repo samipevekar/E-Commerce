@@ -62,7 +62,7 @@ export default function ForgotPassword() {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm bg-black hover:bg-gray-900 "
               >
                 Send Email
               </button>
@@ -73,7 +73,7 @@ export default function ForgotPassword() {
             Send me back to{' '}
             <Link
               to="/login"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              className="font-semibold leading-6 text-black hover:text-gray-900 underline"
             >
               Login
             </Link>

@@ -4,6 +4,7 @@ export function addToCart(item) {
       method: 'POST',
       body: JSON.stringify(item),
       headers: { 'content-type': 'application/json' },
+      credentials: "include",
     });
     const data = await response.json();
     // TODO: on server it will only return some info of user (not password)
@@ -14,7 +15,9 @@ export function addToCart(item) {
 export function fetchItemsByUserId() {
   return new Promise(async (resolve) => {
     //TODO: we will not hard-code server URL here
-    const response = await fetch('/cart');
+    const response = await fetch('/cart',{
+      credentials: "include",
+    });
     const data = await response.json();
     resolve({ data });
   });
@@ -26,6 +29,7 @@ export function updateCart(update) {
       method: 'PATCH',
       body: JSON.stringify(update),
       headers: { 'content-type': 'application/json' },
+      credentials: "include",
     });
     const data = await response.json();
     // TODO: on server it will only return some info of user (not password)
@@ -38,6 +42,7 @@ export function deleteItemFromCart(itemId) {
     const response = await fetch('/cart/' + itemId, {
       method: 'DELETE',
       headers: { 'content-type': 'application/json' },
+      credentials: "include",
     });
     const data = await response.json();
     // TODO: on server it will only return some info of user (not password)

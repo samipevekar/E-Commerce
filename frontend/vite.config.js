@@ -6,4 +6,14 @@ export default defineConfig({
     // server:{
     //     port:8080
     // }
+
+    // server:{
+    //     proxy:{
+    //         '/':{
+    //             target:'',
+    //             changeOrigin: true,
+    //             secure: false,
+    //         }
+    //     }
+    // }
 })

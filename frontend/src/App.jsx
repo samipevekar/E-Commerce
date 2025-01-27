@@ -11,7 +11,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import Protected from './features/auth/components/Protected';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkAuthAsync, selectLoggedInUser, selectUserChecked } from './features/auth/authSlice';
+import { checkAuthAsync, selectAuthStatus, selectLoggedInUser, selectUserChecked } from './features/auth/authSlice';
 import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
 import PageNotFound from './pages/404';
 import OrderSuccessPage from './pages/OrderSuccessPage';
@@ -27,6 +27,7 @@ import AdminProductFormPage from './pages/AdminProductFormPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
 import { positions, Provider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
+import Loader from './features/common/Loader';
 
 const options = {
   timeout: 5000,
@@ -156,6 +157,7 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
   const userChecked = useSelector(selectUserChecked);
+  const authStatus = useSelector(selectAuthStatus)
 
 
   useEffect(()=>{
@@ -173,12 +175,15 @@ function App() {
 
   return (
     <>
-      <div className="App">
+      {authStatus == "idle" ? <div className="App">
        { userChecked && <Provider template={AlertTemplate} {...options}>
           <RouterProvider router={router} />
         </Provider>}
         {/* Link must be inside the Provider */}
+
       </div>
+      :<Loader/>
+      }
     </>
   );
 }

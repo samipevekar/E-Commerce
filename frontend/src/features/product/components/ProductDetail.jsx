@@ -8,6 +8,7 @@ import { addToCartAsync, selectItems } from '../../cart/cartSlice';
 import { discountedPrice } from '../../../app/constants';
 import { useAlert } from 'react-alert';
 import { Grid } from 'react-loader-spinner';
+import ProductDetailSkeleton from '../../common/ProductDetailSkeleton';
 
 // TODO: In server data we will add colors, sizes , highlights. to each product
 
@@ -74,16 +75,7 @@ export default function ProductDetail() {
   return (
     <div className="bg-white">
       {status === 'loading' ? (
-        <Grid
-          height="80"
-          width="80"
-          color="rgb(79, 70, 229) "
-          ariaLabel="grid-loading"
-          radius="12.5"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-        />
+        <ProductDetailSkeleton/>
       ) : null}
       {product && (
         <div className="pt-6">
@@ -125,7 +117,7 @@ export default function ProductDetail() {
           </nav>
 
           {/* Image gallery */}
-          <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+          <div className="mx-auto  mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
             <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
               <img
                 src={product.images[0] || product.thumbnail}
@@ -200,7 +192,7 @@ export default function ProductDetail() {
 
               <form className="mt-10">
                 {/* Colors */}
-                <div>
+                {/* <div>
                   <h3 className="text-sm font-medium text-gray-900">Color</h3>
 
                   <RadioGroup
@@ -239,10 +231,10 @@ export default function ProductDetail() {
                       ))}
                     </div>
                   </RadioGroup>
-                </div>
+                </div> */}
 
                 {/* Sizes */}
-                <div className="mt-10">
+                {/* <div className="mt-10">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-medium text-gray-900">Size</h3>
                     <a
@@ -320,12 +312,12 @@ export default function ProductDetail() {
                       ))}
                     </div>
                   </RadioGroup>
-                </div>
+                </div> */}
 
                 <button
                   onClick={handleCart}
                   type="submit"
-                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-black hover:bg-gray-900 px-8 py-3 text-base font-medium text-white "
                 >
                   Add to Cart
                 </button>
@@ -344,7 +336,7 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              <div className="mt-10">
+              {/* <div className="mt-10">
                 <h3 className="text-sm font-medium text-gray-900">
                   Highlights
                 </h3>
@@ -358,7 +350,7 @@ export default function ProductDetail() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </div> */}
 
               <div className="mt-10">
                 <h2 className="text-sm font-medium text-gray-900">Details</h2>

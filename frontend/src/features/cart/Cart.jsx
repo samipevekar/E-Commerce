@@ -12,6 +12,7 @@ import { Navigate } from 'react-router-dom';
 import { discountedPrice } from '../../app/constants';
 import { Grid } from 'react-loader-spinner';
 import Modal from '../common/Modal';
+import Loader from '../common/Loader';
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -47,16 +48,7 @@ export default function Cart() {
             </h1>
             <div className="flow-root">
               {status === 'loading' ? (
-                <Grid
-                  height="80"
-                  width="80"
-                  color="rgb(79, 70, 229) "
-                  ariaLabel="grid-loading"
-                  radius="12.5"
-                  wrapperStyle={{}}
-                  wrapperClass=""
-                  visible={true}
-                />
+                <Loader/>
               ) : null}
               <ul className="-my-6 divide-y divide-gray-200">
                 {items.map((item) => (
@@ -114,7 +106,7 @@ export default function Cart() {
                           <button
                             onClick={e=>{setOpenModal(item.id)}}
                             type="button"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                            className="font-medium text-red-600 hover:text-red-500"
                           >
                             Remove
                           </button>
@@ -142,18 +134,18 @@ export default function Cart() {
             <div className="mt-6">
               <Link
                 to="/checkout"
-                className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                className="flex items-center justify-center rounded-md border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900"
               >
                 Checkout
               </Link>
             </div>
             <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
               <p>
-                or
+                or {" "}
                 <Link to="/">
                   <button
                     type="button"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                    className="font-medium text-gray-600 hover:text-gray-900"
                   >
                     Continue Shopping
                     <span aria-hidden="true"> &rarr;</span>

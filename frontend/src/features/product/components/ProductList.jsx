@@ -28,6 +28,7 @@ import {
 import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants';
 import Pagination from '../../common/Pagination';
 import { Grid } from 'react-loader-spinner';
+import ProductSkeleton from '../../common/ProductSkeleton';
 
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -123,7 +124,7 @@ export default function ProductList() {
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-gray-900">
               All Products
             </h1>
 
@@ -151,7 +152,7 @@ export default function ProductList() {
                   <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                       {sortOptions.map((option) => (
-                        <Menu.Item key={option.name}>
+                        <Menu.Item key={option.name} >
                           {({ active }) => (
                             <p
                               onClick={(e) => handleSort(e, option)}
@@ -276,7 +277,7 @@ function MobileFilter({
                   <Disclosure
                     as="div"
                     key={section.id}
-                    className="border-t border-gray-200 px-4 py-6"
+                    className="border-t border-gray-200 cursor-pointer px-4 py-6"
                   >
                     {({ open }) => (
                       <>
@@ -403,20 +404,13 @@ function ProductGrid({ products, status }) {
       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {status === 'loading' ? (
-            <Grid
-              height="80"
-              width="80"
-              color="rgb(79, 70, 229) "
-              ariaLabel="grid-loading"
-              radius="12.5"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-            />
+            Array(9).fill(<ProductSkeleton/>).map(elt=>{
+              return elt
+            })          
           ) : null}
           {products.map((product) => (
             <Link to={`/product-detail/${product.id}`} key={product.id}>
-              <div className="group relative border-solid border-2 p-2 border-gray-200">
+              <div className="group relative  p-2 ">
                 <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
                   <img
                     src={product.thumbnail}
@@ -429,7 +423,7 @@ function ProductGrid({ products, status }) {
                     <h3 className="text-sm text-gray-700">
                       <div href={product.thumbnail}>
                         <span aria-hidden="true" className="absolute inset-0" />
-                        {product.title}
+                        {product.title.length>=20 ? `${product.title.slice(0,20)}...` : product.title}
                       </div>
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">

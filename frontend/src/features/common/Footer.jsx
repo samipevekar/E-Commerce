@@ -1,47 +1,64 @@
+import { useSelector } from "react-redux";
+import { selectUserStatus } from "../user/userSlice";
+import Loader from "./Loader";
+
 function Footer() {
+
+  const userStatus = useSelector(selectUserStatus)
+
   return (
     <>
-      <div className=" bg-gray-900">
-        <div className="max-w-2xl mx-auto text-white py-10">
-          <div className="text-center">
-            <h3 className="text-3xl mb-3"> Download our Ecommerce App </h3>
-            <p> Buy what you want. </p>
-            <div className="flex justify-center my-10">
-              <div className="flex items-center border  rounded-lg px-4 py-2 w-52 mx-2">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/888/888857.png"
-                  className="w-7 md:w-8"
-                />
-                <div className="text-left ml-3">
-                  <p className="text-xs text-gray-200">Download on </p>
-                  <p className="text-sm md:text-base"> Google Play Store </p>
-                </div>
-              </div>
-              <div className="flex items-center border  rounded-lg px-4 py-2 w-44 mx-2">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/888/888841.png"
-                  className="w-7 md:w-8"
-                />
-                <div className="text-left ml-3">
-                  <p className="text-xs text-gray-200">Download on </p>
-                  <p className="text-sm md:text-base"> Apple Store </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="mt-28 flex flex-col md:flex-row md:justify-between items-center text-sm text-gray-400">
-            <p className="order-2 md:order-1 mt-8 md:mt-0">
-              {' '}
-              © CoderDost, 2023.{' '}
-            </p>
-            <div className="order-1 md:order-2">
-              <span className="px-2">About us</span>
-              <span className="px-2 border-l">Contact us</span>
-              <span className="px-2 border-l">Privacy Policy</span>
-            </div>
-          </div>
+    {userStatus == 'idle' ?
+      <footer className="footer footer-center bg-black m-auto text-white max-w-[1280px] p-10">
+      <nav className="grid grid-flow-col gap-4">
+        <a className="link link-hover">About us</a>
+        <a className="link link-hover">Contact</a>
+        <a className="link link-hover">Jobs</a>
+        <a className="link link-hover">Press kit</a>
+      </nav>
+      <nav>
+        <div className="grid grid-flow-col gap-4 cursor-pointer">
+          <a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+              <path
+                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+            </svg>
+          </a>
+          <a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+              <path
+                d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
+            </svg>
+          </a>
+          <a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+              <path
+                d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+            </svg>
+          </a>
         </div>
-      </div>
+      </nav>
+      <aside>
+        <p>Copyright © {new Date().getFullYear()} - All right reserved by Sami Pevekar Private Ltd</p>
+      </aside>
+    </footer>
+      :<Loader/>
+      }
     </>
   );
 }
