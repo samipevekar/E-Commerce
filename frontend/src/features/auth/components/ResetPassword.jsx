@@ -1,15 +1,15 @@
-
-import { useSelector, useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { IoMdInformationCircleOutline } from "react-icons/io";
-
-import { selectLoggedInUser, createUserAsync } from '../authSlice';
 import { Link } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useSelector,useDispatch } from 'react-redux'
+import { resetPasswordAsync, resetPasswordRequestAsync, selectError, selectMailSent, selectPasswordReset } from '../authSlice';
 
-export default function Signup() {
-  const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+export default function ResetPassword() {
+
+  const passwordReset = useSelector(selectPasswordReset)
+  const error = useSelector(selectError)
+  const query = new URLSearchParams(window.location.search)
+  const token = query.get('token')
+  const email = query.get('email')
 
   const {
     register,
@@ -17,12 +17,12 @@ export default function Signup() {
     formState: { errors },
   } = useForm();
 
-  console.log(errors);
+  const dispatch = useDispatch()
+  console.log(email,token)
 
   return (
     <>
-      {user && <Navigate to="/" replace={true}></Navigate>}
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      {email && token ? <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
@@ -30,77 +30,20 @@ export default function Signup() {
             alt="Your Company"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Create a New Account
+            Enter New Password
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             noValidate
-            className="space-y-6"
             onSubmit={handleSubmit((data) => {
-              dispatch(
-                createUserAsync({
-                  name:data.name,
-                  email: data.email,
-                  password: data.password,
-                  addresses: [],
-                  role:'user'
-                  //TODO: this role can be directly given on backend
-                })
-              );
               console.log(data);
+              dispatch(resetPasswordAsync({email,token,password:data.password}))
+              // TODO : implementation on backend with email
             })}
+            className="space-y-6"
           >
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  {...register('name', {
-                    required: 'Name is required',
-                  })}
-                  type="text"
-                  className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-                />
-                {errors.name && (
-                  <p className="text-red-500">{errors.name.message}</p>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  {...register('email', {
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
-                      message: 'G-mail is not valid',
-                    },
-                  })}
-                  type="email"
-                  className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-                />
-                {errors.email && <p className='text-blue-500 text-xs flex gap-2 items-center'><IoMdInformationCircleOutline className='' /> e.g. "yourname@gmail.com"</p>}
-                {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
-                )}
-              </div>
-            </div>
-
             <div>
               <div className="flex items-center justify-between">
                 <label
@@ -157,30 +100,32 @@ export default function Signup() {
                     {errors.confirmPassword.message}
                   </p>
                 )}
+                {passwordReset && (<p className="text-green-500">Password Reset Successfully</p>)}
+                {error && (<p className="text-red-500">{error}</p>)}
               </div>
             </div>
 
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
+                className="flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm bg-black hover:bg-gray-900 "
               >
-                Sign Up
+                Reset Password
               </button>
             </div>
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Already a Member?{' '}
+            Send me back to{' '}
             <Link
               to="/login"
-              className="font-semibold leading-6 text-gray-600 underline hover:text-gray-900"
+              className="font-semibold leading-6 text-black hover:text-gray-900 underline"
             >
-              Log In
+              Login
             </Link>
           </p>
         </div>
-      </div>
+      </div>:<p>Incorrect Link</p>}
     </>
   );
 }

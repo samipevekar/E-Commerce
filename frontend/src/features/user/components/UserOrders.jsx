@@ -6,7 +6,6 @@ import {
   selectUserInfoStatus,
   selectUserOrders,
 } from '../userSlice';
-import { discountedPrice } from '../../../app/constants';
 import { Grid } from 'react-loader-spinner';
 import Loader from '../../common/Loader';
 import { Link } from 'react-router-dom';
@@ -51,7 +50,7 @@ export default function UserOrders() {
                               <h3>
                                 <a href={item.product.href}>{item.product.title}</a>
                               </h3>
-                              <p className="ml-4">${discountedPrice(item.product)}</p>
+                              <p className="ml-4">${item.product.discountPrice}</p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
                               {item.product.brand}
@@ -95,7 +94,7 @@ export default function UserOrders() {
                         {order.selectedAddress.name}
                       </p>
                       <p className="mt-1 truncate text-xs  leading-5 text-gray-500">
-                        {order.selectedAddress.street.slice(0,50)}{"..."}
+                        {order.selectedAddress.street.slice(0,45)}{"..."}
                       </p>
                       <p className="mt-1 truncate text-xs  leading-5 text-gray-500">
                         {order.selectedAddress.pinCode}
@@ -116,7 +115,7 @@ export default function UserOrders() {
           </div>
         </div>
       ))
-      : <div className='text-center mt-[30vh] bg-black hover:bg-gray-900 cursor-pointer w-fit m-auto p-3 rounded-md text-white font-semibold'><Link to={'/'} className='p-3'>Shop Now</Link></div>
+      : (status!=='loading' && <div className='text-center mt-[30vh] bg-black hover:bg-gray-900 cursor-pointer w-fit m-auto p-3 rounded-md text-white font-semibold'><Link to={'/'} className='p-3'>Shop Now</Link></div>)
     }
       {status === 'loading' ? (
               <Loader/>

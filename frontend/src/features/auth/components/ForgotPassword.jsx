@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useSelector,useDispatch } from 'react-redux'
+import { resetPasswordRequestAsync, selectMailSent } from '../authSlice';
 
 export default function ForgotPassword() {
+
+  const mailSent = useSelector(selectMailSent)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  console.log(errors);
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -29,6 +33,7 @@ export default function ForgotPassword() {
             noValidate
             onSubmit={handleSubmit((data) => {
               console.log(data);
+              dispatch(resetPasswordRequestAsync(data.email))
               // TODO : implementation on backend with email
             })}
             className="space-y-6"
@@ -44,18 +49,19 @@ export default function ForgotPassword() {
                 <input
                   id="email"
                   {...register('email', {
-                    required: 'email is required',
+                    required: 'Email is required',
                     pattern: {
-                      value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
-                      message: 'email not valid',
+                      value: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+                      message: 'G-mail is not valid',
                     },
                   })}
                   type="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
                 />
                 {errors.email && (
                   <p className="text-red-500">{errors.email.message}</p>
                 )}
+                {mailSent && (<p className="text-green-500">Mail Sent</p>)}
               </div>
             </div>
 

@@ -15,7 +15,6 @@ import {
   selectOrderStatus,
 } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
-import { discountedPrice } from '../app/constants';
 import axios from 'axios'
 import { useAlert } from 'react-alert';
 import Loader from '../features/common/Loader';
@@ -40,7 +39,7 @@ function Checkout() {
   const alert = useAlert()
 
   const totalAmount = items.reduce(
-    (amount, item) => discountedPrice(item.product) * item.quantity + amount,
+    (amount, item) => (item.product.discountPrice) * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -419,7 +418,7 @@ function Checkout() {
                           {address.name}
                         </p>
                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                          {address.street.slice(0,45)}...
+                          {address.street.slice(0,40)}...
                         </p>
                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">
                           {address.pinCode}
@@ -510,7 +509,7 @@ function Checkout() {
                               <h3>
                                 <a href={item.product.id}>{item.product.title}</a>
                               </h3>
-                              <p className="ml-4">${discountedPrice(item.product)}</p>
+                              <p className="ml-4">${item.product.discountPrice}</p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
                               {item.product.brand}

@@ -488,14 +488,14 @@ export default function UserProfile() {
                   </div>
                 </form>
               ) : null}
-              <div className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 rounded-md mt-2 border-gray-200">
+              <div className="flex justify-between gap-x-6 px-2 py-5 border-solid border-2 rounded-md mt-2 border-gray-200">
                 <div className="flex gap-x-4">
                   <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-6 text-gray-900">
                       {address.name}
                     </p>
                     <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                      {address.street.slice(0,50)}...
+                      {address.street.slice(0,45)}...
                     </p>
                     <p className="mt-1 truncate text-xs leading-5 text-gray-500">
                       {address.pinCode}
