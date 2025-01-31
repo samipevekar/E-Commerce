@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+const paymentMethod = {
+  values: ['cash','card'],
+  message: 'only cash or card payment is allowed'
+}
 const orderSchema = Schema({
   items:{
       type: [Schema.Types.Mixed],
@@ -23,6 +27,7 @@ const orderSchema = Schema({
   paymentMethod: {
     type: String,
     required: true,
+    enum:paymentMethod
   },
   paymentStatus: {
     type:String,
@@ -35,8 +40,8 @@ const orderSchema = Schema({
   selectedAddress: {
     type: Schema.Types.Mixed,
     required: true,
-  },
-});
+  },  
+},{timestamps:true});
 
 const virtual = orderSchema.virtual("id");
 virtual.get(function () {

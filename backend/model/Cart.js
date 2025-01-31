@@ -16,7 +16,13 @@ const cartSchema = Schema({
     ref: "User",
     required: true,
   },
-});
+  size:{
+    type: Schema.Types.Mixed
+  },
+  color:{
+    type: Schema.Types.Mixed
+  },
+},{timestamps:true});
 
 const virtual = cartSchema.virtual("id");
 virtual.get(function () {

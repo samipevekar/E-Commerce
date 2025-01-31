@@ -1,4 +1,7 @@
 import { Order } from "../model/Order.js"
+import { Product } from "../model/Product.js"
+import { User } from "../model/User.js"
+import { invoiceTemplate, sendMail } from "../services/common.js"
 
 export const fetchOrderByUser = async(req,res)=>{
     const {id} = req.user
@@ -13,8 +16,24 @@ export const fetchOrderByUser = async(req,res)=>{
 
 export const createOrder = async (req, res) => {
     const order = new Order(req.body)
+
+      for(let item of order.items){
+      let product = await Product.findOne({_id:item.product.id})
+      product.$inc('stock',-1*item.quantity)
+      await product.save()
+    }
   try {
     const doc = await order.save();
+    const user = await User.findById(order.user)
+
+    if(order.paymentMethod == 'card'){
+      let newOder = await Order.findById(order.id)
+      newOder.paymentStatus = 'received'
+      await newOder.save()
+    }
+
+    sendMail({to:user.email,html:invoiceTemplate(order),subject:'Order Received'})
+
     res.status(201).json(doc);
   } catch (error) {
     res.status(400).json(error);

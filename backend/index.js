@@ -19,11 +19,12 @@ import { cookieExtractor, isAuth, sanitizeUser } from "./services/common.js";
 import JwtStrategy from "passport-jwt";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
+dotenv.config();
 import path from "path";
 import MongoStore from "connect-mongo"; // Persistent session store
 import { fileURLToPath } from "url";
 
-dotenv.config();
+
 
 const server = express();
 
@@ -74,6 +75,7 @@ server.use("/users", isAuth(), userRouters);
 server.use("/auth", authRouters);
 server.use("/cart", isAuth(), cartRouters);
 server.use("/orders", isAuth(), ordersRouters);
+
 
 // Passport Strategies
 passport.use(

@@ -3,7 +3,6 @@ import { User } from "../model/User.js"
 
 export const fetchUserById = async (req, res) => {
   const { id } = req.user;
-  console.log(id)
   try {
     const user = await User.findById(id);
     res.status(200).json({id:user.id,addresses:user.addresses,email:user.email,role:user.role,name:user.name});

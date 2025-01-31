@@ -49,17 +49,33 @@ const productSchema = Schema({
         type: [String],
         required: true
     },
+    colors:{
+        type: [Schema.Types.Mixed],
+        required: true
+    },
+    sizes:{
+        type: [Schema.Types.Mixed]
+    },
+    highlights:{
+        type: [String]
+    },
+    discountPrice:{
+        type:Number
+    },
     deleted: {
-        type: Boolean,
-        required: false
+        type: Boolean
     },
 
-})
+},{timestamps:true})
 
 const virtual = productSchema.virtual('id');
 virtual.get(function() {
     return this._id
 })
+// const virtualDiscountPrice = productSchema.virtual('discountPrice');
+// virtualDiscountPrice.get(function() {
+//     return Math.round(this.price*(1-this.discountPercentage/100))
+// })
 productSchema.set('toJSON',{
     virtuals:true,
     virsionKey:false,
