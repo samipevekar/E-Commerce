@@ -70,9 +70,9 @@ An e-commerce website built using the **MERN stack** (MongoDB, Express.js, React
    Create a `.env` file in the root of the backend directory and add:
    ```env
    MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   RAZORPAY_KEY_ID=your_razorpay_key
-   RAZORPAY_SECRET=your_razorpay_secret
+   SECRET_KEY=your_jwt_secret
+   RAZORPAY_API_KEY=your_razorpay_key
+   RAZORPAY_API_SECRET=your_razorpay_secret
    MAIL_PASSWORD = your_mail_password
    ```
 
