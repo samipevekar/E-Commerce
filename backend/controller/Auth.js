@@ -64,8 +64,8 @@ export const checkAuth = async (req, res) => {
 
 export const logout = async (req, res) => {
   res
-    .cookie("jwt", null , {
-      expires: new Date(Date.now()),
+    .cookie("jwt", "" , {
+      expires: new Date(0),
       httpOnly: true,
     })
     .sendStatus(200)
