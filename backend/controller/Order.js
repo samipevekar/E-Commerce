@@ -83,6 +83,7 @@ export const fetchAllOrders = async (req, res) => {
 
   try {
     const docs = await query.exec();
+    // let newDocs = await docs.reverse()
     res.set('X-Total-Count',totalDocs)
     res.status(200).json(docs);
   } catch (error) {

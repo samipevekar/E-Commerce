@@ -6,6 +6,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { selectLoggedInUser, createUserAsync } from '../authSlice';
 import { Link } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
+import GoogleAuth from '../../common/GoogleAuth';
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -169,6 +170,8 @@ export default function Signup() {
               </button>
             </div>
           </form>
+
+          <GoogleAuth/>
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Already a Member?{' '}

@@ -12,6 +12,19 @@ export function createUser(userData) {
   });
 }
 
+export function createGoogleUser(userData) {
+  return new Promise(async (resolve) => {
+    const response = await fetch('/auth/google', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+      headers: { 'content-type': 'application/json' },
+    });
+    const data = await response.json();
+    // TODO: on server it will only return some info of user (not password)
+    resolve({ data });
+  });
+}
+
 export function loginUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try {

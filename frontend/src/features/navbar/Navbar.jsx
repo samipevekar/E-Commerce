@@ -34,7 +34,7 @@ function NavBar({ children }) {
   return (
     <>
       {userInfo && (
-        <div className="min-h-full max-w-[1280px] m-auto">
+        <div className="min-h-full max-w-[1280px] m-auto ">
           <Disclosure as="nav" className="bg-black">
             {({ open }) => (
               <>
@@ -72,14 +72,14 @@ function NavBar({ children }) {
                         </div>
                       </div>
                     </div>
-                    <div className="hidden md:block">
+                    <div className=" md:block">
                       <div className="ml-4 flex items-center md:ml-6">
                         <Link to="/my-cart">
                           <button
                             type="button"
                             className="rounded-full hover:text-gray-300  p-1 text-white  focus:outline-none "
                           >
-                            <span className="sr-only">View notifications</span>
+                            {/* <span className="sr-only">View notifications</span> */}
                             <ShoppingCartIcon
                               className="h-6 w-6"
                               aria-hidden="true"
@@ -97,7 +97,7 @@ function NavBar({ children }) {
                           <div>
                             <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                               <span className="sr-only">Open user menu</span>
-                              <PiUserCircle className="text-3xl text-white hover:text-gray-300" />
+                              <PiUserCircle className="text-3xl hidden md:block text-white hover:text-gray-300" />
                             </Menu.Button>
                           </div>
                           <Transition
@@ -172,7 +172,7 @@ function NavBar({ children }) {
                     )}
                   </div>
                   <div className="border-t border-gray-700 pb-3 pt-4">
-                    <div className="flex items-center px-5">
+                    <div className="flex items-center px-5 ">
                       <div className="flex-shrink-0">
                       <PiUserCircle className="text-3xl text-white hover:text-gray-300" />
                       </div>
@@ -190,13 +190,13 @@ function NavBar({ children }) {
                           className="ml-10 flex-shrink-0 rounded-full  hover:text-gray-300  p-1 text-white  focus:outline-none"
                         >
                           <ShoppingCartIcon
-                            className="h-6 w-6"
+                            className="h-6 w-6 hidden"
                             aria-hidden="true"
                           />
                         </button>
                       </Link>
                       {items.length > 0 && (
-                        <span className="inline-flex items-center rounded-md bg-red-50 mb-7 -ml-3 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+                        <span className=" hidden items-center rounded-md bg-red-50 mb-7 -ml-3 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
                           {items.length}
                         </span>
                       )}

@@ -51,7 +51,6 @@ function AdminOrders() {
 
   const handleSort = (sortOption) => {
     const sort = { _sort: sortOption.sort, _order: sortOption.order };
-    console.log({ sort });
     setSort(sort);
   };
 
@@ -161,134 +160,155 @@ function AdminOrders() {
                   <th className="py-3 px-3 text-center">Actions</th>
                 </tr>
               </thead>
-              {orderStatus == 'idle'?
+              {orderStatus == 'idle' ?
                 <tbody className="text-gray-600 text-sm font-light">
-                {orders.map((order) => (
-                  <tr
-                    key={order.id}
-                    className="border-b border-gray-200 hover:bg-gray-100"
-                  >
-                    <td className="py-3 px-3 text-left whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="mr-2"></div>
-                        <span className="font-medium">{order.id}</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-3 text-left">
-                      {order.items.map((item, index) => (
-                        <div key={index} className="flex items-center">
-                          <div className="mr-2">
-                            <img
-                              className="w-24 h-12 rounded-full"
-                              src={item.product.thumbnail}
-                              alt={item.product.title}
-                            />
+                  {orders.map((order) => (
+                    <tr
+                      key={order.id}
+                      className="border-b border-gray-200 hover:bg-gray-100"
+                    >
+                      <td className="py-3 px-3 text-left whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="mr-2"></div>
+                          <span className="font-medium">{order.id}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-3 text-left">
+                        {order.items.map((item, index) => (
+                          <div key={index} className="flex items-center">
+                            <div className="mr-2">
+                              <img
+                                className="w-24 h-12 rounded-full"
+                                src={item.product.thumbnail}
+                                alt={item.product.title}
+                              />
+                            </div>
+                            <span>
+                              <div>{item.product.title}</div>
+                              <div>#Qty-{item.quantity}</div>
+                              <div>${item.product.discountPrice}</div>
+                            </span>
                           </div>
-                          <span>
-                            <div>{item.product.title}</div>
-                            <div>#Qty-{item.quantity}</div>
-                            <div>${item.product.discountPrice}</div>
+                        ))}
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <div className="flex items-center justify-center">
+                          ${order.totalAmount}
+                        </div>
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <div className="">
+                          <div>
+                            <strong>{order.selectedAddress.name}</strong>,
+                          </div>
+                          <div>{order.selectedAddress.street},</div>
+                          <div>{order.selectedAddress.city}, </div>
+                          <div>{order.selectedAddress.state}, </div>
+                          <div>{order.selectedAddress.pinCode}, </div>
+                          <div>{order.selectedAddress.phone}, </div>
+                        </div>
+                      </td>
+                      <td className="py-3 px-3 text-center ">
+                        {order.id === editableOrderId ? (
+                          <select className='cursor-pointer' defaultValue={order.status} onChange={(e) => handleOrderStatus(e, order)}>
+                            <option className='cursor-pointer' value="pending">Pending</option>
+                            <option className='cursor-pointer' value="dispatched">Dispatched</option>
+                            <option className='cursor-pointer' value="delivered">Delivered</option>
+                            <option className='cursor-pointer' value="cancelled">Cancelled</option>
+                          </select>
+                        ) : (
+                          <span
+                            className={`${chooseColor(
+                              order.status
+                            )} py-1 px-3 rounded-full text-xs`}
+                          >
+                            {order.status}
                           </span>
+                        )}
+                      </td>
+
+                      <td className="py-3 px-3 text-center">
+                        <div className="flex items-center justify-center">
+                          {order.paymentMethod}
                         </div>
-                      ))}
-                    </td>
-                    <td className="py-3 px-3 text-center">
-                      <div className="flex items-center justify-center">
-                        ${order.totalAmount}
-                      </div>
-                    </td>
-                    <td className="py-3 px-3 text-center">
-                      <div className="">
-                        <div>
-                          <strong>{order.selectedAddress.name}</strong>,
+                      </td>
+
+                      <td className="py-3 px-3 text-center">
+                        {order.id === editableOrderId ? (
+                          <select
+                            className='cursor-pointer'
+                            defaultValue={order.paymentStatus}
+                            onChange={(e) => handleOrderPaymentStatus(e, order)}
+                          >
+                            <option className='cursor-pointer' value="pending">Pending</option>
+                            <option className='cursor-pointer' value="received">Received</option>
+                          </select>
+                        ) : (
+                          <span
+                            className={`${chooseColor(
+                              order.paymentStatus
+                            )} py-1 px-3 rounded-full text-xs`}
+                          >
+                            {order.paymentStatus}
+                          </span>
+                        )}
+                      </td>
+
+                      <td className="py-3 px-3 text-center">
+                        <div className="flex items-center justify-center">
+                          {order.createdAt
+                            ? new Date(order.createdAt).toLocaleString("en-GB", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                              hour12: false, // 24-hour format
+                            })
+                            : null}
+
                         </div>
-                        <div>{order.selectedAddress.street},</div>
-                        <div>{order.selectedAddress.city}, </div>
-                        <div>{order.selectedAddress.state}, </div>
-                        <div>{order.selectedAddress.pinCode}, </div>
-                        <div>{order.selectedAddress.phone}, </div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-3 text-center ">
-                      {order.id === editableOrderId ? (
-                        <select className='cursor-pointer' defaultValue={order.status} onChange={(e) => handleOrderStatus(e, order)}>
-                          <option className='cursor-pointer' value="pending">Pending</option>
-                          <option className='cursor-pointer' value="dispatched">Dispatched</option>
-                          <option className='cursor-pointer' value="delivered">Delivered</option>
-                          <option className='cursor-pointer' value="cancelled">Cancelled</option>
-                        </select>
-                      ) : (
-                        <span
-                          className={`${chooseColor(
-                            order.status
-                          )} py-1 px-3 rounded-full text-xs`}
-                        >
-                          {order.status}
-                        </span>
-                      )}
-                    </td>
+                      </td>
 
-                    <td className="py-3 px-3 text-center">
-                      <div className="flex items-center justify-center">
-                        {order.paymentMethod}
-                      </div>
-                    </td>
-
-                    <td className="py-3 px-3 text-center">
-                      {order.id === editableOrderId ? (
-                        <select
-                          className='cursor-pointer'
-                          defaultValue={order.paymentStatus}
-                          onChange={(e) => handleOrderPaymentStatus(e, order)}
-                        >
-                          <option className='cursor-pointer' value="pending">Pending</option>
-                          <option className='cursor-pointer' value="received">Received</option>
-                        </select>
-                      ) : (
-                        <span
-                          className={`${chooseColor(
-                            order.paymentStatus
-                          )} py-1 px-3 rounded-full text-xs`}
-                        >
-                          {order.paymentStatus}
-                        </span>
-                      )}
-                    </td>
-
-                    <td className="py-3 px-3 text-center">
-                      <div className="flex items-center justify-center">
-                        {order.createdAt ? new Date(order.createdAt).toLocaleString() : null}
-                      </div>
-                    </td>
-
-                    <td className="py-3 px-3 text-center">
-                      <div className="flex items-center justify-center">
-                      {order.updatedAt ? new Date(order.updatedAt).toLocaleString() : null}
-                      </div>
-                    </td>
-
-                    <td className="py-3 px-3 text-center">
-                      <div className="flex item-center justify-center">
-                        <div className="w-6 mr-4 cursor-pointer transform hover:text-purple-500 hover:scale-120">
-                          <EyeIcon
-                            className="w-8 h-8"
-                            onClick={(e) => handleShow(order)}
-                          ></EyeIcon>
+                      <td className="py-3 px-3 text-center">
+                        <div className="flex items-center justify-center">
+                        {order.updatedAt
+                            ? new Date(order.updatedAt).toLocaleString("en-GB", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                              hour12: false, // 24-hour format
+                            })
+                            : null}
                         </div>
-                        <div className="w-6 cursor-pointer mr-2 transform hover:text-purple-500 hover:scale-120">
-                          <PencilIcon
-                            className="w-8 h-8"
-                            onClick={(e) => handleEdit(order)}
-                          ></PencilIcon>
+                      </td>
+
+                      <td className="py-3 px-3 text-center">
+                        <div className="flex item-center justify-center">
+                          <div className="w-6 mr-4 cursor-pointer transform hover:text-purple-500 hover:scale-120">
+                            <EyeIcon
+                              className="w-8 h-8"
+                              onClick={(e) => handleShow(order)}
+                            ></EyeIcon>
+                          </div>
+                          <div className="w-6 cursor-pointer mr-2 transform hover:text-purple-500 hover:scale-120">
+                            <PencilIcon
+                              className="w-8 h-8"
+                              onClick={(e) => handleEdit(order)}
+                            ></PencilIcon>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              : Array(6).fill(<AdminOrderSkeleton/>).map(elt=>{
-                return elt
-              })
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                : Array(6).fill(<AdminOrderSkeleton />).map(elt => {
+                  return elt
+                })
               }
             </table>
           </div>

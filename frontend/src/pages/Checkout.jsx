@@ -15,9 +15,7 @@ import {
   selectOrderStatus,
 } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
-import axios from 'axios'
 import { useAlert } from 'react-alert';
-import Loader from '../features/common/Loader';
 
 function Checkout() {
 

@@ -51,7 +51,6 @@ export default function ProductDetail() {
   const status = useSelector(selectProductListStatus);
 
   const handleCart = (e) => {
-    console.log(product)
     e.preventDefault();
     if(product.stock<=0) {
       alert.info('Product is out of stock')
@@ -59,7 +58,6 @@ export default function ProductDetail() {
     }
     
     if (items.findIndex((item) => item.product.id === product.id) < 0) {
-      console.log({ items, product });
       const newItem = {
         product: product.id,
         quantity: 1,

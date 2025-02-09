@@ -51,7 +51,6 @@ export const sendMail = async function({to, subject, text, html}){
 
   return info
 }
-
 export const invoiceTemplate = function(order){
 
   return (`<!DOCTYPE html>
@@ -135,6 +134,7 @@ export const invoiceTemplate = function(order){
      height: 100% !important;
      padding: 0 !important;
      margin: 0 !important;
+     background-color: #ffffff !important; /* Set background to white */
    }
  
    /**
@@ -158,7 +158,7 @@ export const invoiceTemplate = function(order){
    </style>
  
  </head>
- <body style="background-color: #D2C7BA;">
+ <body style="background-color: #ffffff;">
  
    <!-- start preheader -->
    <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
@@ -171,7 +171,7 @@ export const invoiceTemplate = function(order){
  
      <!-- start logo -->
      <tr>
-       <td align="center" bgcolor="#D2C7BA">
+       <td align="center" bgcolor="#ffffff">
          <!--[if (gte mso 9)|(IE)]>
          <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
          <tr>
@@ -197,7 +197,7 @@ export const invoiceTemplate = function(order){
  
      <!-- start hero -->
      <tr>
-       <td align="center" bgcolor="#D2C7BA">
+       <td align="center" bgcolor="#ffffff">
          <!--[if (gte mso 9)|(IE)]>
          <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
          <tr>
@@ -205,8 +205,8 @@ export const invoiceTemplate = function(order){
          <![endif]-->
          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
            <tr>
-             <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
-               <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Thank you for your order!</h1>
+             <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #000000;">
+               <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px; color: #000000;">Thank you for your order!</h1>
              </td>
            </tr>
          </table>
@@ -221,7 +221,7 @@ export const invoiceTemplate = function(order){
  
      <!-- start copy block -->
      <tr>
-       <td align="center" bgcolor="#D2C7BA">
+       <td align="center" bgcolor="#ffffff">
          <!--[if (gte mso 9)|(IE)]>
          <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
          <tr>
@@ -231,8 +231,8 @@ export const invoiceTemplate = function(order){
  
            <!-- start copy -->
            <tr>
-             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-               <p style="margin: 0;">Here is a summary of your recent order. If you have any questions or concerns about your order, please <a href="coderdost@gmail.com">contact us</a>.</p>
+             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #000000;">
+               <p style="margin: 0;">Here is a summary of your recent order. If you have any questions or concerns about your order, please <a href="spevekar4@gmail.com">contact us</a>.</p>
              </td>
            </tr>
            <!-- end copy -->
@@ -242,23 +242,23 @@ export const invoiceTemplate = function(order){
              <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                <table border="0" cellpadding="0" cellspacing="0" width="100%">
                  <tr>
-                   <td align="left" bgcolor="#D2C7BA" width="60%" style="padding: 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"><strong>Order #</strong></td>
-                   <td align="left" bgcolor="#D2C7BA" width="20%" style="padding: 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"><strong>Qty</strong></td>
-                   <td align="left" bgcolor="#D2C7BA" width="20%" style="padding: 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"><strong>Price</strong></td>
+                   <td align="left" bgcolor="#000000" width="60%" style="padding: 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #ffffff;"><strong>Order #</strong></td>
+                   <td align="left" bgcolor="#000000" width="20%" style="padding: 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #ffffff;"><strong>Qty</strong></td>
+                   <td align="left" bgcolor="#000000" width="20%" style="padding: 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #ffffff;"><strong>Price</strong></td>
                  </tr>
                  ${order.items.map(item=>`<tr>
-                   <td align="left" width="60%" style="padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">${item.product.title}</td>
-                   <td align="left" width="20%" style="padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">${item.quantity}</td>
-                   <td align="left" width="20%" style="padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">$${Math.round(item.product.price*(1-item.product.discountPercentage/100),2)}</td>
+                   <td align="left" width="60%" style="padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #000000;">${item.product.title}</td>
+                   <td align="left" width="20%" style="padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #000000;">${item.quantity}</td>
+                   <td align="left" width="20%" style="padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #000000;">$${Math.round(item.product.price*(1-item.product.discountPercentage/100),2)}</td>
                  </tr>`)
  
                  }
                 
                 
                  <tr>
-                   <td align="left" width="60%" style="padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;"><strong>Total</strong></td>
-                   <td align="left" width="20%" style="padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;"><strong>${order.totalItems}</strong></td>
-                   <td align="left" width="20%" style="padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;"><strong>$${order.totalAmount}</strong></td>
+                   <td align="left" width="60%" style="padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #000000; border-bottom: 2px dashed #000000; color: #000000;"><strong>Total</strong></td>
+                   <td align="left" width="20%" style="padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #000000; border-bottom: 2px dashed #000000; color: #000000;"><strong>${order.totalItems}</strong></td>
+                   <td align="left" width="20%" style="padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #000000; border-bottom: 2px dashed #000000; color: #000000;"><strong>$${order.totalAmount}</strong></td>
                  </tr>
                </table>
              </td>
@@ -277,7 +277,7 @@ export const invoiceTemplate = function(order){
  
      <!-- start receipt address block -->
      <tr>
-       <td align="center" bgcolor="#D2C7BA" valign="top" width="100%">
+       <td align="center" bgcolor="#ffffff" valign="top" width="100%">
          <!--[if (gte mso 9)|(IE)]>
          <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
          <tr>
@@ -285,7 +285,7 @@ export const invoiceTemplate = function(order){
          <![endif]-->
          <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
            <tr>
-             <td align="center" valign="top" style="font-size: 0; border-bottom: 3px solid #d4dadf">
+             <td align="left" valign="top" style="font-size: 0; border-bottom: 3px solid #000000">
                <!--[if (gte mso 9)|(IE)]>
                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
                <tr>
@@ -294,7 +294,7 @@ export const invoiceTemplate = function(order){
                <div style="display: inline-block; width: 100%; max-width: 50%; min-width: 240px; vertical-align: top;">
                  <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 300px;">
                    <tr>
-                     <td align="left" valign="top" style="padding-bottom: 36px; padding-left: 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                     <td align="left" valign="top" style="padding-bottom: 36px; padding-left: 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #000000;">
                        <p><strong>Delivery Address</strong></p>
                        <p>${order.selectedAddress.name}<br>${order.selectedAddress.street}<br>${order.selectedAddress.city},${order.selectedAddress.state},${order.selectedAddress.pinCode}</p>
                        <p>${order.selectedAddress.phone}</p>

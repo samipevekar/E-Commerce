@@ -23,6 +23,8 @@ dotenv.config();
 import path from "path";
 import MongoStore from "connect-mongo"; // Persistent session store
 import { fileURLToPath } from "url";
+import cron from 'node-cron'
+import axios from 'axios'
 
 
 
@@ -139,6 +141,21 @@ mongoose
 // Default Route
 server.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
+cron.schedule('*/1 * * * *', async () => {
+  try {
+      const response = await axios.get(`${ 'https://e-commerce-sami.vercel.app/' || `/`}`, {
+          family: 4  // Force IPv4
+      });
+      if(response.status == 'ok'){
+        console.log('ok')
+      }else{
+        console.log('Not ok')
+      }
+  } catch (error) {
+      console.error('Error pinging the server:', error.message);
+  }
 });
 
 

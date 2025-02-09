@@ -80,9 +80,9 @@ export const resetPasswordRequest = async (req, res) => {
     await user.save();
 
     const resetPageLink =
-      "http://localhost:5173/reset-password?token=" + token + "&email=" + email;
+      "https://e-commerce-sami.vercel.app/reset-password?token=" + token + "&email=" + email;
     const subject = "reset password for e-commerce";
-    const html = `<p>Click <a href ='${resetPageLink}'>here</a> to Reset Password</p>`;
+    const html = `<strong>Click <a href ='${resetPageLink}'>here</a> to Reset Password</strong>`;
 
     //let send email and a token in the mail body so we can verify that user has clicked right link
 
@@ -114,7 +114,7 @@ export const resetPassword = async (req, res) => {
         user.salt = salt;
         await user.save();
         const subject = "password successfully reset for e-commerce";
-        const html = `<p>Successfully Reset Password</p>`;
+        const html = `<strong>Password Reset Successfully</strong>`;
 
         //let send email and a token in the mail body so we can verify that user has clicked right link
         if (email) {
@@ -127,5 +127,126 @@ export const resetPassword = async (req, res) => {
     );
   } else {
     res.status(400).json({ message: "Email not found" });
+  }
+};
+
+
+// authentication with google
+
+// export const googleAuth = async (req, res) => {
+//   const { name, email } = req.body;
+
+//   try {
+//     // Check if the user already exists
+//     let user = await User.findOne({ email });
+
+//     if (!user) {
+//       const hashedPassword = await bcrypt.hash("default-password", 10);
+//       // If user does not exist, create a new one
+//       user = new User({
+//         name,
+//         email,
+//         password: hashedPassword,
+//       });
+
+//       const doc = await user.save();
+
+//       const token = jwt.sign(sanitizeUser(doc), process.env.SECRET_KEY);
+  
+//       // Send the token and user data to the frontend
+//       res
+//         .cookie("jwt", user.token, {
+//           expires: new Date(Date.now() + 3600000),
+//           httpOnly: true,
+//         })
+//         .status(201)
+//         .json({
+//           id: doc.id,
+//           name: doc.name,
+//           role: doc.role,
+//           token: token,
+//         });
+//     }
+
+//     // Generate JWT for the user
+//     // const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+//     //   expiresIn: "15d",
+//     // });
+
+//   } catch (error) {
+//     console.log("Error in Google Auth:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+export const googleAuth = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const salt = crypto.randomBytes(16) // Salt ko properly store karne ke liye string me convert kar diya
+
+      crypto.pbkdf2(
+        "default-password",
+        salt, // Buffer me convert kiya
+        310000,
+        32,
+        "sha256",
+        async function (err, hashedPassword) {
+          if (err) {
+            return res.status(500).json({ error: "Error hashing password" });
+          }
+
+          user = new User({
+            name,
+            email,
+            password: hashedPassword,// Ensure hashed password is saved as a string
+            salt, // Salt properly save hoga
+          });
+
+          const doc = await user.save();
+
+          req.login(sanitizeUser(doc), (err) => {
+            if (err) {
+              return res.status(400).json(err);
+            }
+
+            const token = jwt.sign(sanitizeUser(doc), process.env.SECRET_KEY);
+            res
+              .cookie("jwt", token, {
+                expires: new Date(Date.now() + 3600000),
+                httpOnly: true,
+              })
+              .status(201)
+              .json({
+                id: doc.id,
+                name: doc.name,
+                role: doc.role,
+                token: token,
+              });
+          });
+        }
+      );
+    } else {
+      // Agar user already exist karta hai, toh JWT sign karke return karo
+      const token = jwt.sign(sanitizeUser(user), process.env.SECRET_KEY);
+      res
+        .cookie("jwt", token, {
+          expires: new Date(Date.now() + 3600000),
+          httpOnly: true,
+        })
+        .status(200)
+        .json({
+          id: user.id,
+          name: user.name,
+          role: user.role,
+          token: token,
+        });
+    }
+  } catch (error) {
+    console.log("Error in Google Auth:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

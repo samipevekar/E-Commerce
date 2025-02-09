@@ -35,7 +35,7 @@ const productSchema = Schema({
     },
     brand: {
         type: String,
-        required: true
+        // required: true
     },
     category: {
         type: String,

@@ -3,6 +3,7 @@ import { selectError, selectLoggedInUser } from '../authSlice';
 import { Link, Navigate } from 'react-router-dom';
 import { loginUserAsync } from '../authSlice';
 import { useForm } from 'react-hook-form';
+import GoogleAuth from '../../common/GoogleAuth';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -108,6 +109,8 @@ export default function Login() {
               </button>
             </div>
           </form>
+
+          <GoogleAuth/>
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{' '}

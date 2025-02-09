@@ -29,6 +29,7 @@ import { ITEMS_PER_PAGE } from '../../../app/constants';
 import Pagination from '../../common/Pagination';
 import { Grid } from 'react-loader-spinner';
 import ProductSkeleton from '../../common/ProductSkeleton';
+import { addToCartAsync } from '../../cart/cartSlice';
 
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -46,7 +47,6 @@ export default function ProductList() {
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
   const totalItems = useSelector(selectTotalItems);
-  console.log(totalItems)
   const status = useSelector(selectProductListStatus);
   const filters = [
     {
@@ -81,19 +81,16 @@ export default function ProductList() {
       );
       newFilter[section.id].splice(index, 1);
     }
-    console.log({ newFilter });
 
     setFilter(newFilter);
   };
-
+  
   const handleSort = (e, option) => {
     const sort = { _sort: option.sort, _order: option.order };
-    console.log({ sort });
     setSort(sort);
   };
 
   const handlePage = (page) => {
-    console.log({ page });
     setPage(page);
   };
 
@@ -111,6 +108,8 @@ export default function ProductList() {
     dispatch(fetchBrandsAsync());
     dispatch(fetchCategoriesAsync());
   }, []);
+
+
 
   return (
     <div className="bg-white">
@@ -204,7 +203,7 @@ export default function ProductList() {
               ></DesktopFilter>
               {/* Product grid */}
               <div className="lg:col-span-3">
-                <ProductGrid products={products} status={status}></ProductGrid>
+                <ProductGrid products={products} status={status} ></ProductGrid>
               </div>
               {/* Product grid end */}
             </div>
@@ -401,8 +400,8 @@ function DesktopFilter({ handleFilter, filters }) {
 function ProductGrid({ products, status }) {
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+      <div className="mx-auto max-w-2xl px-0 md:p-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+        <div className="mt-6 grid grid-cols-2 gap-x-0 md:gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {status === 'loading' ? (
             Array(9).fill(<ProductSkeleton/>).map(elt=>{
               return elt
@@ -411,7 +410,7 @@ function ProductGrid({ products, status }) {
           {products.map((product) => (
             <Link to={`/product-detail/${product.id}`} key={product.id}>
               <div className="group relative  p-2 ">
-                <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
+                <div className="min-h-44 md:min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
                   <img
                     src={product.thumbnail}
                     alt={product.title}
@@ -421,13 +420,13 @@ function ProductGrid({ products, status }) {
                 <div className="mt-4 flex justify-between">
                   <div>
                     <h3 className="text-sm text-gray-700">
-                      <div href={product.thumbnail}>
+                      <div>
                         <span aria-hidden="true" className="absolute inset-0" />
                         {product.title.length>=20 ? `${product.title.slice(0,20)}...` : product.title}
                       </div>
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">
-                      <StarIcon className="w-6 h-6 inline"></StarIcon>
+                      <StarIcon className="w-5 h-5 inline"></StarIcon>
                       <span className=" align-bottom">{product.rating}</span>
                     </p>
                   </div>
@@ -450,7 +449,6 @@ function ProductGrid({ products, status }) {
                     <p className="text-sm text-red-400">out of stock</p>
                   </div>
                 )}
-                {/* TODO: will not be needed when backend is implemented */}
               </div>
             </Link>
           ))}

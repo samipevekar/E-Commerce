@@ -32,7 +32,6 @@ export default function ForgotPassword() {
           <form
             noValidate
             onSubmit={handleSubmit((data) => {
-              console.log(data);
               dispatch(resetPasswordRequestAsync(data.email))
               // TODO : implementation on backend with email
             })}
@@ -79,7 +78,7 @@ export default function ForgotPassword() {
             Send me back to{' '}
             <Link
               to="/login"
-              className="font-semibold leading-6 text-black hover:text-gray-900 underline"
+              className="font-semibold leading-6 text-gray-600 hover:text-gray-900 underline"
             >
               Login
             </Link>

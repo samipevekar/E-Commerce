@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { loginUser, createUser, signOut, checkAuth, resetPasswordRequest, resetPassword } from './authAPI';
+import { loginUser, createUser, signOut, checkAuth, resetPasswordRequest, resetPassword, createGoogleUser } from './authAPI';
 import { updateUser } from '../user/userAPI';
 
 const initialState = {
@@ -15,6 +15,15 @@ export const createUserAsync = createAsyncThunk(
   'user/createUser',
   async (userData) => {
     const response = await createUser(userData);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
+export const createGoogleUserAsync = createAsyncThunk(
+  'user/createGoogleUser',
+  async (userData) => {
+    const response = await createGoogleUser(userData);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -91,6 +100,13 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(createUserAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.loggedInUserToken = action.payload;
+      })
+      .addCase(createGoogleUserAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(createGoogleUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.loggedInUserToken = action.payload;
       })
