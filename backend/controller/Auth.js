@@ -67,15 +67,15 @@ export const checkAuth = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-  res
-    .cookie("jwt", "" , {
-      expires: new Date(0),
-      httpOnly: true,      
-      sameSite:"lax",
-      secure:true
-    })
-    .sendStatus(200)
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: true,
+    path: "/", // Ensure it clears for all paths
+  });
+  res.sendStatus(200);
 };
+
 
 export const resetPasswordRequest = async (req, res) => {
   const email = req.body.email;
