@@ -26,6 +26,8 @@ export const createUser = async (req, res) => {
               .cookie("jwt", token, {
                 expires: new Date(Date.now() + 3600000),
                 httpOnly: true,
+                sameSite:"lax",
+                secure:true
               })
               .status(201)
               .json({
@@ -48,7 +50,9 @@ export const loginUser = async (req, res) => {
   res
     .cookie("jwt", user.token, {
       expires: new Date(Date.now() + 3600000),
-      httpOnly: true,
+      httpOnly: true,      
+      sameSite:"lax",
+      secure:true
     })
     .status(201)
     .json({ id: user.id, name: user.name, role: user.role, token: user.token });
@@ -66,7 +70,9 @@ export const logout = async (req, res) => {
   res
     .cookie("jwt", "" , {
       expires: new Date(0),
-      httpOnly: true,
+      httpOnly: true,      
+      sameSite:"lax",
+      secure:true
     })
     .sendStatus(200)
 };
@@ -217,7 +223,9 @@ export const googleAuth = async (req, res) => {
             res
               .cookie("jwt", token, {
                 expires: new Date(Date.now() + 3600000),
-                httpOnly: true,
+                httpOnly: true,                
+                sameSite:"lax",
+                secure:true
               })
               .status(201)
               .json({
@@ -235,7 +243,9 @@ export const googleAuth = async (req, res) => {
       res
         .cookie("jwt", token, {
           expires: new Date(Date.now() + 3600000),
-          httpOnly: true,
+          httpOnly: true,          
+          sameSite:"lax",
+          secure:true
         })
         .status(200)
         .json({
