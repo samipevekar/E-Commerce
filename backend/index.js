@@ -61,7 +61,7 @@ server.use(
 server.use(passport.authenticate("session"));
 server.use(
   cors({
-    origin:'http://localhost:5173',
+    origin:['http://localhost:5173','https://e-commerce-sami.vercel.app/'],
     credentials:true,
     exposedHeaders: ["X-Total-Count"],
   })
@@ -145,7 +145,7 @@ server.get("*", (req, res) => {
 
 cron.schedule('*/1 * * * *', async () => {
   try {
-      const response = await axios.get(`${ 'https://e-commerce-sami.vercel.app/' || `/`}`, {
+      const response = await axios.get(`${ 'https://e-commerce-sami.vercel.app/' || `http://localhost:8080/`}`, {
           family: 4  // Force IPv4
       });
       if(response.status == 'ok'){
@@ -163,6 +163,6 @@ cron.schedule('*/1 * * * *', async () => {
 export default server;
 
 // Start Locally (Optional)
-if (process.env.NODE_ENV !== "production") {
-  server.listen(8080, () => console.log("Server started on port 8080"));
-}
+// if (process.env.NODE_ENV !== "production") {
+server.listen(8080, () => console.log("Server started on port 8080"));
+// }
